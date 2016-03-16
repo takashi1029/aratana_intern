@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+    <title>traning</title>
+    <style type="text/css">
+    	.graph {
+    		height: 300px;
+    		width: 300px;
+    	}
+    	.graph rect {
+    		fill: #ff0000;
+    		stroke: #ffff00;
+    		stroke-width: 5px;
+    	}
+    </style>
+</head>
+<body>
+<svg id="graph"></svg>
+
+<button id="update1">データ1</button>
+<button id="update2">データ2</button>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+	"use strict";
+
+	var dataList1 = [300,100,50,230,25];
+	var dataList2 = [100,120,80,200,90];
+
+	var y = Math.max.apply(null,dataList1.concat(dataList2));
+
+	var width = 20;
+	var space = 20;
+	d3.select("#graph")
+	  .attr("height",y);
+
+	d3.select("#graph")
+	  .selectAll("rect")
+	  .data(dataList1)
+	  .enter()
+	  .append("rect")
+	  .attr("x",function(d,i){return i *(width + space);})
+	  .attr("y",function(d,i){return y - d;})
+	  .attr("width",width)
+	  .attr("height",0)
+	  .attr("height",function(d,i){return d});
+
+	d3.select("#update2").on("click",function(){
+		d3.select("#graph")
+		  .selectAll("rect")
+		  .data(dataList2)
+		  .transition()
+		  .attr("y",function(d,i){return y - d;})
+		  .attr("height",function(d,i){return d;});
+	});
+
+	d3.select("#update1").on("click",function(){
+		d3.select("#graph")
+		  .selectAll("rect")
+		  .data(dataList1)
+		  .transition()
+		  .attr("y",function(d,i){return y - d;})
+		  .attr("height",function(d,i){return d;});
+	});
+
+
+</script>
+</body>
+</html>
